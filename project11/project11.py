@@ -546,40 +546,65 @@ with open('best_svm_model.pkl', 'wb') as file:
 # Deploying the Project
 
 
-# !pip install streamlit
-
-import pickle
 import streamlit as st
 import numpy as np
+import pickle
 
-# Load your trained models
-with open('best_logistic_model.pkl', 'rb') as file:
-    logistic_model = pickle.load(file)
+# Load your trained model
+with open('best_random_forest_model.pkl', 'rb') as model_file:
+    model = pickle.load(model_file)
 
-with open('best_random_forest_model.pkl', 'rb') as file:
-    random_forest_model = pickle.load(file)
-
-with open('best_svm_model.pkl', 'rb') as file:
-    svm_model = pickle.load(file)
-
-# Define the Streamlit app
+# Streamlit app title
 st.title("Loan Approval Prediction App")
-st.write("This app predicts loan approval status based on applicant data.")
+st.write("Enter the applicant details below to predict if the loan would be approved.")
 
-# Define input fields for each feature
+# Input fields with descriptions
+
+# 1. Gender
+st.write("**Gender**: Select 'Male' or 'Female' for the applicant's gender.")
 gender = st.selectbox("Gender", options=["Male", "Female"])
+
+# 2. Married
+st.write("**Married**: Select 'Yes' if the applicant is married, otherwise select 'No'.")
 married = st.selectbox("Married", options=["Yes", "No"])
+
+# 3. Dependents
+st.write("**Dependents**: Enter the number of dependents the applicant has. Choose '3+' if there are three or more.")
 dependents = st.selectbox("Dependents", options=["0", "1", "2", "3+"])
+
+# 4. Education
+st.write("**Education**: Select 'Graduate' if the applicant is a graduate, otherwise select 'Not Graduate'.")
 education = st.selectbox("Education", options=["Graduate", "Not Graduate"])
+
+# 5. Self-Employed
+st.write("**Self-Employed**: Select 'Yes' if the applicant is self-employed, otherwise select 'No'.")
 self_employed = st.selectbox("Self-Employed", options=["Yes", "No"])
+
+# 6. Applicant Income
+st.write("**Applicant Income**: Enter the applicant's monthly income.")
 applicant_income = st.number_input("Applicant Income", min_value=0)
+
+# 7. Coapplicant Income
+st.write("**Coapplicant Income**: Enter the coapplicant's monthly income. Enter 0 if there is no coapplicant.")
 coapplicant_income = st.number_input("Coapplicant Income", min_value=0)
+
+# 8. Loan Amount
+st.write("**Loan Amount**: Enter the loan amount requested by the applicant (in thousands).")
 loan_amount = st.number_input("Loan Amount (in thousands)", min_value=0)
+
+# 9. Loan Amount Term
+st.write("**Loan Amount Term**: Enter the loan repayment term in months.")
 loan_amount_term = st.number_input("Loan Amount Term (in months)", min_value=0)
+
+# 10. Credit History
+st.write("**Credit History**: Select 1 if the applicant has a good credit history, otherwise select 0.")
 credit_history = st.selectbox("Credit History", options=[1, 0])
+
+# 11. Property Area
+st.write("**Property Area**: Select the area type where the applicant's property is located.")
 property_area = st.selectbox("Property Area", options=["Urban", "Semiurban", "Rural"])
 
-# Map inputs to numerical values for the model
+# Convert inputs to numerical values as per model encoding
 gender = 1 if gender == "Male" else 0
 married = 1 if married == "Yes" else 0
 dependents = 3 if dependents == "3+" else int(dependents)
@@ -592,19 +617,8 @@ input_data = np.array([[gender, married, dependents, education, self_employed,
                         applicant_income, coapplicant_income, loan_amount,
                         loan_amount_term, credit_history, property_area]])
 
-# Predict and display result for each model
+# Predict and display result
 if st.button("Predict Loan Approval"):
-    # Logistic Regression Prediction
-    logistic_prediction = logistic_model.predict(input_data)
-    logistic_result = "Loan Approved" if logistic_prediction[0] == 1 else "Loan Not Approved"
-    st.write(f"**Logistic Regression Prediction:** {logistic_result}")
-    
-    # Random Forest Prediction
-    rf_prediction = random_forest_model.predict(input_data)
-    rf_result = "Loan Approved" if rf_prediction[0] == 1 else "Loan Not Approved"
-    st.write(f"**Random Forest Prediction:** {rf_result}")
-    
-    # SVM Prediction
-    svm_prediction = svm_model.predict(input_data)
-    svm_result = "Loan Approved" if svm_prediction[0] == 1 else "Loan Not Approved"
-    st.write(f"**SVM Prediction:** {svm_result}")
+    prediction = model.predict(input_data)
+    result = "Approved" if prediction[0] == 1 else "Not Approved"
+    st.write(f"Prediction: The loan would be **{result}**.")
