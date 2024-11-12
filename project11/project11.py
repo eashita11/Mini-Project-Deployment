@@ -608,4 +608,29 @@ credit_history = st.selectbox("Credit History", options=[1, 0])
 
 # 11. Property Area
 st.write("**Property Area**: Select the area type where the applicant's property is located.")
-property_ar
+property_area = st.selectbox("Property Area", options=["Urban", "Semiurban", "Rural"])
+
+# Convert inputs to numerical values as per model encoding
+gender = 1 if gender == "Male" else 0
+married = 1 if married == "Yes" else 0
+dependents = 3 if dependents == "3+" else int(dependents)
+education = 1 if education == "Graduate" else 0
+self_employed = 1 if self_employed == "Yes" else 0
+property_area = {"Urban": 2, "Semiurban": 1, "Rural": 0}[property_area]
+
+# Prepare input data for prediction
+input_data = np.array([[gender, married, dependents, education, self_employed,
+                        applicant_income, coapplicant_income, loan_amount,
+                        loan_amount_term, credit_history, property_area]])
+
+# Predict and display results for all three models
+if st.button("Predict Loan Approval"):
+    logistic_prediction = logistic_model.predict(input_data)
+    random_forest_prediction = random_forest_model.predict(input_data)
+    svm_prediction = svm_model.predict(input_data)
+
+    # Display predictions for each model
+    st.write("### Model Predictions:")
+    st.write(f"**Logistic Regression Prediction**: {'Approved' if logistic_prediction[0] == 1 else 'Not Approved'}")
+    st.write(f"**Random Forest Prediction**: {'Approved' if random_forest_prediction[0] == 1 else 'Not Approved'}")
+    st.write(f"**SVM Prediction**: {'Approved' if svm_prediction[0] == 1 else 'Not Approved'}")
