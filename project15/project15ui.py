@@ -391,5 +391,5 @@ input_data = np.array([[pclass, sex, age, sibsp, parch, fare, embarked]])
 # Predict and display the result
 if st.button("Predict Survival"):
     prediction = model.predict(input_data)
-    result = "Survived" if prediction[0] == 1 else "not survive"
+    result = "Survive" if prediction[0] == 1 else "not survive"
     st.write(f"Prediction: The passenger would **{result}**.")
