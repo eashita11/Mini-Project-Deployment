@@ -28,7 +28,7 @@ warnings.filterwarnings('ignore')
 
 # Data Load
 # Loading the dataset into a pandas DataFrame (assuming 'data.csv' is the dataset)
-data=pd.read_csv('/Users/anil/Downloads/Project 11.0/loan_prediction.csv')
+data=pd.read_csv('loan_prediction.csv')
 # data
 
 # data.head()
