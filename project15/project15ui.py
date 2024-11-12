@@ -76,7 +76,7 @@ y = data_clean['Survived']
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2)
 
 # Display the shape of the training and test sets
-X_train.shape, X_test.shape, y_train.shape, y_test.shape
+# X_train.shape, X_test.shape, y_train.shape, y_test.shape
 
 # Standardize the features (PCA or model scaling may require this step)
 scaler = StandardScaler()
