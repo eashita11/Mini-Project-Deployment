@@ -30,7 +30,7 @@ warnings.filterwarnings('ignore')
 
 # Data Load
 # Loading the dataset into a pandas DataFrame (assuming 'data.csv' is the dataset)
-data=pd.read_csv('/Users/anil/Downloads/Final Projects Machine Learning/Project 15.0/titanic_train.csv')
+data=pd.read_csv('project15/titanic_train.csv')
 # data
 
 # # Checking for null values
