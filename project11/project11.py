@@ -550,13 +550,19 @@ import streamlit as st
 import numpy as np
 import pickle
 
-# Load your trained model
-with open('best_random_forest_model.pkl', 'rb') as model_file:
-    model = pickle.load(model_file)
+# Load all three models
+with open('logistic_model.pkl', 'rb') as model_file:
+    logistic_model = pickle.load(model_file)
+
+with open('random_forest_model.pkl', 'rb') as model_file:
+    random_forest_model = pickle.load(model_file)
+
+with open('svm_model.pkl', 'rb') as model_file:
+    svm_model = pickle.load(model_file)
 
 # Streamlit app title
 st.title("Loan Approval Prediction App")
-st.write("Enter the applicant details below to predict if the loan would be approved.")
+st.write("Enter the applicant details below to predict if the loan would be approved by each model.")
 
 # Input fields with descriptions
 
@@ -617,8 +623,14 @@ input_data = np.array([[gender, married, dependents, education, self_employed,
                         applicant_income, coapplicant_income, loan_amount,
                         loan_amount_term, credit_history, property_area]])
 
-# Predict and display result
+# Predict and display results for all three models
 if st.button("Predict Loan Approval"):
-    prediction = model.predict(input_data)
-    result = "Approved" if prediction[0] == 1 else "Not Approved"
-    st.write(f"Prediction: The loan would be **{result}**.")
+    logistic_prediction = logistic_model.predict(input_data)
+    random_forest_prediction = random_forest_model.predict(input_data)
+    svm_prediction = svm_model.predict(input_data)
+
+    # Display predictions for each model
+    st.write("### Model Predictions:")
+    st.write(f"**Logistic Regression Prediction**: {'Approved' if logistic_prediction[0] == 1 else 'Not Approved'}")
+    st.write(f"**Random Forest Prediction**: {'Approved' if random_forest_prediction[0] == 1 else 'Not Approved'}")
+    st.write(f"**SVM Prediction**: {'Approved' if svm_prediction[0] == 1 else 'Not Approved'}")
