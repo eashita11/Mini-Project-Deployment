@@ -10,8 +10,8 @@ st.set_page_config(page_title="Excel Data Visualization", layout="wide")
 # Title
 st.title("Excel Data Visualization")
 
-# # OpenAI Free Key Setup
-# openai.api_key = "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"
+# OpenAI Free Key Setup
+openai.api_key = "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"
 
 # Upload Excel File
 uploaded_file = st.file_uploader("Upload your Excel file", type=["xlsx", "xls"])
